@@ -9,7 +9,7 @@ namespace AsterSupportAgent.Models;
 public class AgentAction
 {
     [JsonPropertyName("action")]
-    public string Action { get; set; } = string.Empty;
+    public AgentActionType Action { get; set; } = AgentActionType.NONE;
 
     [JsonPropertyName("query")]
     public string? Query { get; set; }
@@ -22,4 +22,14 @@ public class AgentAction
 
     [JsonPropertyName("message")]
     public string? Message { get; set; }
+}
+
+[JsonConverter(typeof(JsonStringEnumConverter))]
+public enum AgentActionType
+{
+    NONE,
+    SEARCH_KB,
+    GET_ORDER_STATUS,
+    CREATE_BOOKING_LINK,
+    RESPOND,
 }

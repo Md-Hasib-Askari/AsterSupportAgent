@@ -1,15 +1,18 @@
+using System.Text.Json.Serialization;
+
 namespace AsterSupportAgent.Models;
 
 public class ChatMessage
 {
-    public ChatMessageRole Role { get; set; } = ChatMessageRole.None;
+    public ChatMessageRole Role { get; set; } = ChatMessageRole.NONE;
     public string Content { get; set; } = string.Empty;
 }
 
-public record ChatMessageRole(string Value)
+[JsonConverter(typeof(JsonStringEnumConverter))]
+public enum ChatMessageRole
 {
-    public static readonly ChatMessageRole None = new(string.Empty);
-    public static readonly ChatMessageRole System = new("system");
-    public static readonly ChatMessageRole User = new("user");
-    public static readonly ChatMessageRole Assistant = new("assistant");
+    NONE,
+    SYSTEM,
+    USER,
+    ASSISTANT,
 }
