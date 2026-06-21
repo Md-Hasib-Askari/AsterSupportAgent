@@ -1,0 +1,59 @@
+{
+  "ORD-1001": {
+    "orderId": "ORD-1001",
+    "customerEmail": "jane.doe@example.com",
+    "status": "shipped",
+    "items": [
+      { "name": "Classic Cotton Tee", "qty": 2, "price": 24.0 },
+      { "name": "Denim Jacket", "qty": 1, "price": 89.0 }
+    ],
+    "total": 137.0,
+    "placedAt": "2026-06-15T14:22:00Z",
+    "shippedAt": "2026-06-16T09:10:00Z",
+    "trackingNumber": "1Z999AA10123456784",
+    "carrier": "UPS",
+    "estimatedDelivery": "2026-06-22"
+  },
+  "ORD-1002": {
+    "orderId": "ORD-1002",
+    "customerEmail": "mike.smith@example.com",
+    "status": "processing",
+    "items": [
+      { "name": "Running Shoes - Size 10", "qty": 1, "price": 110.0 }
+    ],
+    "total": 110.0,
+    "placedAt": "2026-06-19T11:05:00Z",
+    "shippedAt": null,
+    "trackingNumber": null,
+    "carrier": null,
+    "estimatedDelivery": "2026-06-26"
+  },
+  "ORD-1003": {
+    "orderId": "ORD-1003",
+    "customerEmail": "alex.chen@example.com",
+    "status": "delivered",
+    "items": [
+      { "name": "Wool Sweater", "qty": 1, "price": 65.0 },
+      { "name": "Beanie", "qty": 1, "price": 18.0 }
+    ],
+    "total": 83.0,
+    "placedAt": "2026-06-05T08:40:00Z",
+    "shippedAt": "2026-06-06T10:00:00Z",
+    "trackingNumber": "1Z999AA10123456999",
+    "carrier": "UPS",
+    "estimatedDelivery": "2026-06-10",
+    "deliveredAt": "2026-06-10T16:32:00Z"
+  },
+  "ORD-1004": {
+    "orderId": "ORD-1004",
+    "customerEmail": "priya.patel@example.com",
+    "status": "cancelled",
+    "items": [
+      { "name": "Leather Belt", "qty": 1, "price": 45.0 }
+    ],
+    "total": 45.0,
+    "placedAt": "2026-06-10T19:15:00Z",
+    "cancelledAt": "2026-06-11T08:00:00Z",
+    "cancellationReason": "Customer requested cancellation"
+  }
+}

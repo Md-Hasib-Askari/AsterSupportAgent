@@ -1,0 +1,47 @@
+[
+  {
+    "id": "shipping-times",
+    "title": "Shipping Times",
+    "content": "Standard shipping takes 5-7 business days within the US. Express shipping takes 1-2 business days and costs an additional $15. International shipping takes 10-21 business days depending on destination country. Orders placed before 2pm ET ship same day."
+  },
+  {
+    "id": "returns-policy",
+    "title": "Returns & Refunds",
+    "content": "We accept returns within 30 days of delivery for a full refund, as long as items are unworn and have original tags attached. Refunds are processed within 5-7 business days after we receive the returned item. Sale items marked 'Final Sale' cannot be returned."
+  },
+  {
+    "id": "exchange-policy",
+    "title": "Exchanges",
+    "content": "To exchange an item for a different size or color, start a return for the original item and place a new order for the replacement. We don't currently support direct exchanges, but new orders ship within 24 hours so you won't wait long."
+  },
+  {
+    "id": "order-tracking",
+    "title": "Order Tracking",
+    "content": "You can track your order using the order ID found in your confirmation email. Tracking updates typically appear within 24 hours of the order shipping. If your tracking hasn't updated in 5+ days, contact support."
+  },
+  {
+    "id": "payment-methods",
+    "title": "Payment Methods",
+    "content": "We accept Visa, Mastercard, American Express, Discover, PayPal, and Apple Pay. We do not currently accept cryptocurrency or buy-now-pay-later services."
+  },
+  {
+    "id": "international-orders",
+    "title": "International Orders",
+    "content": "We ship to over 40 countries. International customers are responsible for any customs duties or import taxes charged by their country. These fees are not included in the order total at checkout."
+  },
+  {
+    "id": "size-guide",
+    "title": "Size Guide",
+    "content": "Our sizing runs true to standard US sizing. If you're between sizes, we recommend sizing up. A full size chart with measurements in inches and centimeters is available on each product page."
+  },
+  {
+    "id": "discount-codes",
+    "title": "Discount Codes",
+    "content": "Discount codes can be applied at checkout in the 'Promo Code' field. Only one code can be used per order. Codes cannot be applied retroactively to orders that have already been placed."
+  },
+  {
+    "id": "contact-human",
+    "title": "Talking to a Human",
+    "content": "If you need to speak with a human support agent, you can book a call directly through our scheduling tool, or email support@example.com. Human support hours are Monday-Friday, 9am-6pm ET."
+  }
+]
