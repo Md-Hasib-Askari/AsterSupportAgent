@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Aster — Support</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --paper: #f7f5f0;
+    --paper-raised: #ffffff;
+    --thread: #b5472b;
+    --thread-soft: #e8d4cb;
+    --muted: #8a8478;
+    --line: #e3ddd1;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  header {
+    padding: 28px 24px 20px;
+    border-bottom: 1px solid var(--line);
+    text-align: center;
+  }
+
+  header .mark {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  header .sub {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 4px;
+    letter-spacing: 0.02em;
+  }
+
+  main {
+    flex: 1;
+    max-width: 640px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 24px 16px 140px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .msg {
+    display: flex;
+    flex-direction: column;
+    max-width: 86%;
+    animation: rise 0.25s ease both;
+  }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .msg.user { align-self: flex-end; align-items: flex-end; }
+  .msg.bot { align-self: flex-start; align-items: flex-start; }
+
+  .bubble {
+    padding: 12px 16px;
+    border-radius: 14px;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  .msg.user .bubble {
+    background: var(--ink);
+    color: var(--paper);
+    border-bottom-right-radius: 4px;
+  }
+
+  .msg.bot .bubble {
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-bottom-left-radius: 4px;
+  }
+
+  .receipt {
+    margin-top: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .receipt-line {
+    font-size: 11px;
+    color: var(--muted);
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding-left: 2px;
+  }
+
+  .receipt-line .dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--thread);
+    flex-shrink: 0;
+  }
+
+  .receipt-line .tool {
+    font-weight: 600;
+    color: var(--thread);
+  }
+
+  .typing {
+    display: flex;
+    gap: 4px;
+    padding: 14px 16px;
+  }
+  .typing span {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--muted);
+    animation: bounce 1.2s infinite ease-in-out;
+  }
+  .typing span:nth-child(2) { animation-delay: 0.15s; }
+  .typing span:nth-child(3) { animation-delay: 0.3s; }
+
+  @keyframes bounce {
+    0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
+    40% { transform: translateY(-4px); opacity: 1; }
+  }
+
+  .composer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, var(--paper) 60%, transparent);
+    padding: 20px 16px 24px;
+  }
+
+  .composer form {
+    max-width: 640px;
+    margin: 0 auto;
+    display: flex;
+    gap: 8px;
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 8px 8px 8px 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  }
+
+  .composer input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    background: transparent;
+    color: var(--ink);
+  }
+
+  .composer input::placeholder { color: var(--muted); }
+
+  .composer button {
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    border-radius: 11px;
+    width: 38px;
+    height: 38px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.15s ease;
+  }
+
+  .composer button:hover { background: var(--thread); }
+  .composer button:focus-visible, .composer input:focus-visible { outline: 2px solid var(--thread); outline-offset: 2px; }
+
+  .suggestions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 4px;
+  }
+
+  .suggestions button {
+    font-family: 'Inter', sans-serif;
+    font-size: 12.5px;
+    color: var(--ink);
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    padding: 7px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+  }
+  .suggestions button:hover { border-color: var(--thread); color: var(--thread); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .msg, .typing span { animation: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="mark">Aster</div>
+  <div class="sub">Support — KB search · order lookup · live booking</div>
+</header>
+
+<main id="thread"></main>
+
+<div class="composer">
+  <form id="form">
+    <input id="input" type="text" placeholder="Ask about an order, shipping, returns…" autocomplete="off" />
+    <button type="submit" aria-label="Send">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 8L15 1L9 15L7 9L1 8Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+    </button>
+  </form>
+</div>
+
+<script>
+  const thread = document.getElementById('thread');
+  const form = document.getElementById('form');
+  const input = document.getElementById('input');
+  let sessionId = 'sess-' + Math.random().toString(36).slice(2);
+
+  const TOOL_LABELS = {
+    search_kb: 'searched help docs',
+    get_order_status: 'looked up order',
+    create_booking_link: 'created Calendly booking link',
+  };
+
+  function addMessage(role, text) {
+    const wrap = document.createElement('div');
+    wrap.className = 'msg ' + role;
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble';
+    bubble.textContent = text;
+    wrap.appendChild(bubble);
+    thread.appendChild(wrap);
+    thread.scrollTop = thread.scrollHeight;
+    window.scrollTo(0, document.body.scrollHeight);
+    return wrap;
+  }
+
+  function addReceipt(wrap, trace) {
+    const toolCalls = trace.filter(t => t.type === 'tool_call');
+    if (!toolCalls.length) return;
+    const receipt = document.createElement('div');
+    receipt.className = 'receipt';
+    toolCalls.forEach(tc => {
+      const line = document.createElement('div');
+      line.className = 'receipt-line';
+      line.innerHTML = '<span class="dot"></span><span class="tool">' +
+        (TOOL_LABELS[tc.action.action] || tc.action.action) + '</span>';
+      receipt.appendChild(line);
+    });
+    wrap.appendChild(receipt);
+  }
+
+  function addTyping() {
+    const wrap = document.createElement('div');
+    wrap.className = 'msg bot';
+    wrap.id = 'typing-indicator';
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble typing';
+    bubble.innerHTML = '<span></span><span></span><span></span>';
+    wrap.appendChild(bubble);
+    thread.appendChild(wrap);
+    thread.scrollTop = thread.scrollHeight;
+    window.scrollTo(0, document.body.scrollHeight);
+  }
+
+  function removeTyping() {
+    document.getElementById('typing-indicator')?.remove();
+  }
+
+  async function send(text) {
+    addMessage('user', text);
+    addTyping();
+    try {
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: text, sessionId }),
+      });
+      const data = await res.json();
+      removeTyping();
+      if (data.error) {
+        addMessage('bot', "Sorry — something went wrong: " + data.error);
+        return;
+      }
+      const wrap = addMessage('bot', data.reply);
+      addReceipt(wrap, data.trace || []);
+    } catch (err) {
+      removeTyping();
+      addMessage('bot', "Couldn't reach the server. Is it running?");
+    }
+  }
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const text = input.value.trim();
+    if (!text) return;
+    input.value = '';
+    send(text);
+  });
+
+  // Greeting
+  addMessage('bot', "Hi, I'm Aster's support agent. I can check order status, answer shipping/return questions, or get you a real booking link to talk to a human.");
+</script>
+
+</body>
+</html>
