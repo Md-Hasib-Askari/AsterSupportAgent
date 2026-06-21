@@ -1,0 +1,6 @@
+@AsterSupportAgent_HostAddress = http://localhost:5127
+
+GET {{AsterSupportAgent_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
