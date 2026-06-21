@@ -2,15 +2,11 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using AsterSupportAgent.Models;
+using AsterSupportAgent.Services.Interfaces;
 
 namespace AsterSupportAgent.Services;
 
-public interface IOpenRouterClient
-{
-    Task<string> CompleteAsync(List<ChatMessage> messages);
-}
-
-public class OpenRouterClient(HttpClient httpClient, IConfiguration config) : IOpenRouterClient
+public class OpenRouterClient(HttpClient httpClient, IConfiguration config) : ILLMClient
 {
     private readonly HttpClient _httpClient = httpClient;
     private readonly string? _apiKey = config["OpenRouter:ApiKey"];

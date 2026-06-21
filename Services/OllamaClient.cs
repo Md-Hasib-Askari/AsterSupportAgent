@@ -2,19 +2,15 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using AsterSupportAgent.Models;
+using AsterSupportAgent.Services.Interfaces;
 
 namespace AsterSupportAgent.Services;
-
-public interface IOllamaClient
-{
-    Task<string> CompleteAsync(List<ChatMessage> messages);
-}
 
 public class OllamaClient(
     HttpClient httpClient,
     IConfiguration config,
     ILogger<OllamaClient> logger
-) : IOllamaClient
+) : ILLMClient
 {
     private readonly HttpClient _httpClient = httpClient;
     private readonly string? _apiKey = config["Ollama:ApiKey"];

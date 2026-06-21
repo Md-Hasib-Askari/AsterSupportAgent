@@ -1,4 +1,5 @@
 using AsterSupportAgent.Services;
+using AsterSupportAgent.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,7 +28,7 @@ builder.Services.AddSingleton<IKbSearchService, KbSearchService>();
 builder.Services.AddSingleton<IOrderService, OrderService>();
 
 // HttpClient-backed Services
-builder.Services.AddHttpClient<IOllamaClient, OllamaClient>(client =>
+builder.Services.AddHttpClient<ILLMClient, OllamaClient>(client =>
 {
     client.BaseAddress = new Uri("https://ollama.com/api/chat");
     client.DefaultRequestHeaders.Add(
