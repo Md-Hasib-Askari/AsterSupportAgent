@@ -1,4 +1,8 @@
+using AsterSupportAgent.Services;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Logging.ClearProviders().AddConsole();
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -17,10 +21,28 @@ builder.Services.AddCors(options =>
 });
 
 // App Services
-// TODO: add services here
+builder.Services.AddSingleton<ISessionStore, InMemorySessionStore>();
+builder.Services.AddSingleton<IAgentService, AgentService>();
+builder.Services.AddSingleton<IKbSearchService, KbSearchService>();
+builder.Services.AddSingleton<IOrderService, OrderService>();
 
 // HttpClient-backed Services
-// TODO: add HttpClient-backed services here
+builder.Services.AddHttpClient<IOllamaClient, OllamaClient>(client =>
+{
+    client.BaseAddress = new Uri("https://ollama.com/api/chat");
+    client.DefaultRequestHeaders.Add(
+        "Authorization",
+        $"Bearer {builder.Configuration["Ollama:ApiKey"]}"
+    );
+});
+builder.Services.AddHttpClient<ICalendlyService, CalendlyService>(client =>
+{
+    client.BaseAddress = new Uri("https://api.calendly.com/");
+    client.DefaultRequestHeaders.Add(
+        "Authorization",
+        $"Bearer {builder.Configuration["CALENDLY_API_KEY"]}"
+    );
+});
 
 var app = builder.Build();
 
