@@ -1,6 +1,7 @@
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
+using Microsoft.Extensions.Logging;
 
 namespace AsterSupportAgent.Services;
 
@@ -28,16 +29,21 @@ public interface ICalendlyService
 /// availability, then hand that link to the user to complete on Calendly's
 /// UI.
 /// </summary>
-public class CalendlyService(HttpClient httpClient, IConfiguration config) : ICalendlyService
+public class CalendlyService(HttpClient httpClient, IConfiguration config, ILogger<CalendlyService> logger) : ICalendlyService
 {
     private readonly HttpClient _httpClient = httpClient;
     private readonly string? _apiKey = config["Calendly:ApiKey"];
     private readonly string? _eventTypeUri = config["Calendly:EventTypeUri"];
+    private readonly ILogger<CalendlyService> _logger = logger;
 
     public async Task<CalendlyBookingResult> CreateBookingLinkAsync(string? reason)
     {
+        _logger.LogInformation("Calendly — CreateBookingLink called, reason: {Reason}", reason ?? "(none)");
+
         if (string.IsNullOrWhiteSpace(_apiKey) || string.IsNullOrWhiteSpace(_eventTypeUri))
         {
+            _logger.LogError("Calendly — Missing config: ApiKey={HasApiKey}, EventTypeUri={HasEventTypeUri}",
+                !string.IsNullOrWhiteSpace(_apiKey), !string.IsNullOrWhiteSpace(_eventTypeUri));
             return new CalendlyBookingResult
             {
                 ErrorMessage = "Calendly API key or event type URI is not configured.",
@@ -55,6 +61,9 @@ public class CalendlyService(HttpClient httpClient, IConfiguration config) : ICa
                 }
             );
 
+            _logger.LogInformation("Calendly — POST scheduling_links, eventType: {EventTypeUri}, payload: {Payload}",
+                _eventTypeUri, payload);
+
             using var request = new HttpRequestMessage(
                 HttpMethod.Post,
                 "https://api.calendly.com/scheduling_links"
@@ -67,8 +76,12 @@ public class CalendlyService(HttpClient httpClient, IConfiguration config) : ICa
             var response = await _httpClient.SendAsync(request);
             var body = await response.Content.ReadAsStringAsync();
 
+            _logger.LogInformation("Calendly — API response: status={StatusCode}, body={Body}",
+                (int)response.StatusCode, body);
+
             if (!response.IsSuccessStatusCode)
             {
+                _logger.LogError("Calendly — API request failed, status: {StatusCode}", response.StatusCode);
                 return new CalendlyBookingResult
                 {
                     ErrorMessage =
@@ -80,8 +93,10 @@ public class CalendlyService(HttpClient httpClient, IConfiguration config) : ICa
             using var doc = JsonDocument.Parse(body);
             var bookingUrl = doc
                 .RootElement.GetProperty("resource")
-                .GetProperty("scheduling_url")
+                .GetProperty("booking_url")
                 .GetString();
+
+            _logger.LogInformation("Calendly — Booking link created: {BookingUrl}", bookingUrl);
 
             return new CalendlyBookingResult
             {
@@ -92,6 +107,7 @@ public class CalendlyService(HttpClient httpClient, IConfiguration config) : ICa
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, "Calendly — Exception while creating booking link");
             return new CalendlyBookingResult
             {
                 ErrorMessage = "An error occurred while creating the booking link.",

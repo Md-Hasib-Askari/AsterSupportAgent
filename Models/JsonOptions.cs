@@ -1,4 +1,5 @@
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace AsterSupportAgent.Models;
 
@@ -18,5 +19,11 @@ public static class JsonOptions
     public static readonly JsonSerializerOptions CaseInsensitive = new()
     {
         PropertyNameCaseInsensitive = true,
+    };
+
+    public static readonly JsonSerializerOptions ToolResult = new()
+    {
+        PropertyNameCaseInsensitive = true,
+        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
     };
 }

@@ -107,12 +107,12 @@ public class AgentService(
                 );
                 if (order is null)
                 {
-                    return JsonSerializer.Serialize(new { error });
+                    return JsonSerializer.Serialize(new { error }, JsonOptions.ToolResult);
                 }
-                return JsonSerializer.Serialize(order);
+                return JsonSerializer.Serialize(order, JsonOptions.ToolResult);
             case AgentActionType.CREATE_BOOKING_LINK:
                 var result = await _calendlyService.CreateBookingLinkAsync(action.Reason);
-                return JsonSerializer.Serialize(result);
+                return JsonSerializer.Serialize(result, JsonOptions.ToolResult);
             default:
                 return string.Empty;
         }

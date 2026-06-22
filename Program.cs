@@ -36,7 +36,7 @@ builder.Services.AddHttpClient<ICalendlyService, CalendlyService>(client =>
     client.BaseAddress = new Uri("https://api.calendly.com/");
     client.DefaultRequestHeaders.Add(
         "Authorization",
-        $"Bearer {builder.Configuration["CALENDLY_API_KEY"]}"
+        $"Bearer {builder.Configuration["Calendly:ApiKey"]}"
     );
 });
 
