@@ -27,15 +27,10 @@ builder.Services.AddSingleton<IAgentService, AgentService>();
 builder.Services.AddSingleton<IKbSearchService, KbSearchService>();
 builder.Services.AddSingleton<IOrderService, OrderService>();
 
-// HttpClient-backed Services
-builder.Services.AddHttpClient<ILLMClient, OllamaClient>(client =>
-{
-    client.BaseAddress = new Uri("https://ollama.com/api/chat");
-    client.DefaultRequestHeaders.Add(
-        "Authorization",
-        $"Bearer {builder.Configuration["Ollama:ApiKey"]}"
-    );
-});
+// HttpClient-backed Services — register both clients
+builder.Services.AddHttpClient<OllamaClient>();
+builder.Services.AddHttpClient<OpenRouterClient>();
+builder.Services.AddSingleton<ILLMClient, LLMClientStrategy>();
 builder.Services.AddHttpClient<ICalendlyService, CalendlyService>(client =>
 {
     client.BaseAddress = new Uri("https://api.calendly.com/");

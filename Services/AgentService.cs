@@ -1,5 +1,6 @@
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using AsterSupportAgent.Services.Interfaces;
 using AsterSupportAgent.DTOs;
 using AsterSupportAgent.Models;
 
@@ -23,13 +24,13 @@ public interface IAgentService
 /// a new message, and loops until the model emits a "respond" action.
 /// </summary>
 public class AgentService(
-    IOllamaClient llm,
+    ILLMClient llm,
     IKbSearchService kbSvc,
     IOrderService orderSvc,
     ICalendlyService calendlySvc
 ) : IAgentService
 {
-    private readonly IOllamaClient _llm = llm;
+    private readonly ILLMClient _llm = llm;
     private readonly IKbSearchService _kbSearchService = kbSvc;
     private readonly IOrderService _orderService = orderSvc;
     private readonly ICalendlyService _calendlyService = calendlySvc;
