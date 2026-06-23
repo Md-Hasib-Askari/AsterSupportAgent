@@ -2,12 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace AsterSupportAgent.DTOs;
 
-public class TraceStep
-{
-    public int Step { get; set; }
-    public TraceStepType Type { get; set; } = TraceStepType.NONE;
-    public string? Raw { get; set; }
-}
+public record TraceStep(int Step, TraceStepType Type, string? Raw = null);
 
 [JsonConverter(typeof(JsonStringEnumConverter))]
 public enum TraceStepType

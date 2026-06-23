@@ -1,8 +1,8 @@
 using System.Text.Json;
 using System.Text.RegularExpressions;
-using AsterSupportAgent.Services.Interfaces;
 using AsterSupportAgent.DTOs;
 using AsterSupportAgent.Models;
+using AsterSupportAgent.Services.Interfaces;
 
 namespace AsterSupportAgent.Services;
 
@@ -139,12 +139,11 @@ public class AgentService(
             if (action is null || action.Action == AgentActionType.NONE)
             {
                 trace.Add(
-                    new TraceStep
-                    {
-                        Step = step + 1,
-                        Type = TraceStepType.FALLBACK_RAW,
-                        Raw = llmResponse,
-                    }
+                    new TraceStep(
+                        Step: step + 1,
+                        Type: TraceStepType.FALLBACK_RAW,
+                        Raw: llmResponse
+                    )
                 );
                 return new AgentResult { Reply = llmResponse.Trim(), Trace = trace };
             }
@@ -152,26 +151,12 @@ public class AgentService(
             if (action.Action == AgentActionType.RESPOND)
             {
                 var msg = action.Message ?? string.Empty;
-                trace.Add(
-                    new TraceStep
-                    {
-                        Step = step + 1,
-                        Type = TraceStepType.RESPOND,
-                        Raw = msg,
-                    }
-                );
+                trace.Add(new TraceStep(Step: step + 1, Type: TraceStepType.RESPOND, Raw: msg));
                 return new AgentResult { Reply = action.Message ?? string.Empty, Trace = trace };
             }
 
             var result = await ExecuteActionAsync(action);
-            trace.Add(
-                new TraceStep
-                {
-                    Step = step + 1,
-                    Type = TraceStepType.TOOL_CALL,
-                    Raw = result,
-                }
-            );
+            trace.Add(new TraceStep(Step: step + 1, Type: TraceStepType.TOOL_CALL, Raw: result));
 
             messages.Add(
                 new ChatMessage

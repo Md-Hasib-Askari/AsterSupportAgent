@@ -45,12 +45,7 @@ public class ChatController(
             _sessionStore.Set(sessionId, updatedHistory);
 
             return Ok(
-                new ChatResponse
-                {
-                    SessionId = sessionId,
-                    Reply = result.Reply,
-                    Trace = result.Trace,
-                }
+                new ChatResponse(Reply: result.Reply, Trace: result.Trace, SessionId: sessionId)
             );
         }
         catch (Exception ex)
