@@ -45,11 +45,9 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/api/health");
     app.MapOpenApi();
 }
 
-app.UseHttpsRedirection();
 app.UseCors();
 app.UseDefaultFiles(); // serve wwwroot/index.html at "/"
 app.UseStaticFiles();

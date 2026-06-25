@@ -3,5 +3,6 @@ obj/
 *.user
 appsettings.Development.json
 appsettings.json
+.env
 .vs/
 .vscode/

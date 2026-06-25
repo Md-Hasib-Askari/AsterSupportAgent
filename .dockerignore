@@ -1,0 +1,13 @@
+bin/
+obj/
+.git/
+.gitignore
+.vs/
+.vscode/
+*.user
+*.md
+appsettings.Development.json
+appsettings.Development.example.json
+Dockerfile
+.dockerignore
+AsterSupportAgent.http
