@@ -2,11 +2,13 @@ using AsterSupportAgent.DTOs;
 using AsterSupportAgent.Models;
 using AsterSupportAgent.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace AsterSupportAgent.Controllers;
 
 [ApiController]
 [Route("api/chat")]
+[EnableRateLimiting("fixed-by-ip")]
 public class ChatController(
     IAgentService agentService,
     ISessionStore sessionStore,

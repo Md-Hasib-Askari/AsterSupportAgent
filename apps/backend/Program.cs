@@ -1,5 +1,6 @@
 using AsterSupportAgent.Services;
 using AsterSupportAgent.Services.Interfaces;
+using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,12 +13,31 @@ builder.Services.AddOpenApi();
 // MVC Controllers
 builder.Services.AddControllers();
 
-// CORS - open for local development
+// Rate limiting: 30 requests per minute per IP address
+builder.Services.AddRateLimiter(options =>
+{
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+    options.AddPolicy("fixed-by-ip", context =>
+        RateLimitPartition.GetFixedWindowLimiter(
+            partitionKey: context.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+            factory: _ => new FixedWindowRateLimiterOptions
+            {
+                PermitLimit = 30,
+                Window = TimeSpan.FromMinutes(1),
+                QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                QueueLimit = 0,
+            }
+        ));
+});
+
+// CORS — allow frontend origin
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(builder =>
+    options.AddDefaultPolicy(policy =>
     {
-        builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+        policy.WithOrigins("https://aster-agent.vercel.app", "http://localhost:3000")
+              .AllowAnyMethod()
+              .AllowAnyHeader();
     });
 });
 
@@ -49,6 +69,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors();
+
+app.UseRateLimiter();
 
 app.MapControllers();
 
