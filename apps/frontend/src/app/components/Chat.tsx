@@ -90,7 +90,7 @@ export default function Chat() {
 
   return (
     <>
-      <main ref={threadRef} className="flex-1 max-w-[640px] w-full mx-auto px-4 pb-36 flex flex-col gap-4 overflow-y-auto">
+      <main ref={threadRef} className="flex-1 max-w-[640px] w-full mx-auto px-4 pt-4 pb-36 flex flex-col gap-4 overflow-y-auto">
         {messages.map((msg, i) => (
           <div
             key={i}
