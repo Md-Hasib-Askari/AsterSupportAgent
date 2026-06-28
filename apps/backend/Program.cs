@@ -17,6 +17,11 @@ builder.Services.AddControllers();
 builder.Services.AddRateLimiter(options =>
 {
     options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+    options.OnRejected = (context, _) =>
+    {
+        context.HttpContext.Response.Headers.Append("Retry-After", "60");
+        return ValueTask.CompletedTask;
+    };
     options.AddPolicy("fixed-by-ip", context =>
         RateLimitPartition.GetFixedWindowLimiter(
             partitionKey: context.Connection.RemoteIpAddress?.ToString() ?? "unknown",
@@ -62,13 +67,12 @@ builder.Services.AddHttpClient<ICalendlyService, CalendlyService>(client =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+app.UseCors();
+
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
-
-app.UseCors();
 
 app.UseRateLimiter();
 
