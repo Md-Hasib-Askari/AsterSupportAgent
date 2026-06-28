@@ -49,8 +49,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors();
-app.UseDefaultFiles(); // serve wwwroot/index.html at "/"
-app.UseStaticFiles();
 
 app.MapControllers();
 
