@@ -8,7 +8,7 @@ namespace AsterSupportAgent.Controllers;
 
 [ApiController]
 [Route("api/chat")]
-[EnableRateLimiting("fixed-by-ip")]
+[EnableRateLimiting("sliding-by-ip")]
 public class ChatController(
     IAgentService agentService,
     ISessionStore sessionStore,

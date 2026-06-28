@@ -13,34 +13,35 @@ builder.Services.AddOpenApi();
 // MVC Controllers
 builder.Services.AddControllers();
 
-// Rate limiting: 30 requests per minute per IP address
+// Rate limiting: 15 requests per day per IP address
 builder.Services.AddRateLimiter(options =>
 {
     options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
     options.OnRejected = (context, _) =>
     {
-        context.HttpContext.Response.Headers.Append("Retry-After", "60");
+        context.HttpContext.Response.Headers.Append("Retry-After", "86400");
         return ValueTask.CompletedTask;
     };
-    options.AddPolicy("fixed-by-ip", context =>
-        RateLimitPartition.GetFixedWindowLimiter(
+    options.AddPolicy("sliding-by-ip", context =>
+        RateLimitPartition.GetSlidingWindowLimiter(
             partitionKey: context.Connection.RemoteIpAddress?.ToString() ?? "unknown",
-            factory: _ => new FixedWindowRateLimiterOptions
+            factory: _ => new SlidingWindowRateLimiterOptions
             {
-                PermitLimit = 30,
-                Window = TimeSpan.FromMinutes(1),
+                PermitLimit = 15,
+                Window = TimeSpan.FromDays(1),
+                SegmentsPerWindow = 24,
                 QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
                 QueueLimit = 0,
             }
         ));
 });
 
-// CORS — allow frontend origin
+// CORS
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        policy.WithOrigins("https://aster-agent.vercel.app", "http://localhost:3000")
+        policy.WithOrigins("https://aster-agent.vercel.app")
               .AllowAnyMethod()
               .AllowAnyHeader();
     });
